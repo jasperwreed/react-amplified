@@ -1,0 +1,21 @@
+type Image @model @auth(rules: [{allow: public}]) @key(name: "byMember", fields: ["memberID"]) {
+  id: ID!
+  imageUrl: String
+  memberID: ID!
+}
+
+type Member @model @key(name: "byCohort", fields: ["cohortID"]) @auth(rules: [{allow: public}]) {
+  id: ID!
+  firstName: String
+  lastName: String
+  cohortID: ID!
+  instructor: Boolean
+  Images: [Image] @connection(keyName: "byMember", fields: ["id"])
+}
+
+type Cohort @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  startDate: Int
+  Members: [Member] @connection(keyName: "byCohort", fields: ["id"])
+}
